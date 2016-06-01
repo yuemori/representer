@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Representer do
-  it 'has a version number' do
-    expect(Representer::VERSION).not_to be nil
-  end
+  describe '.load' do
+    subject { described_class.load file }
 
-  it 'does something useful' do
-    expect(false).to eq(true)
+    let(:file) { File.expand_path '../fixtures/user.conf', __FILE__ }
+
+    it { expect { subject }.not_to raise_error }
   end
 end
