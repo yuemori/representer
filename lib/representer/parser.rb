@@ -5,9 +5,14 @@ module Representer
     private
 
     def namespace(name, &block)
-      Namespace.new(name).tap do |namespace|
-        Evaluator::NamespaceEvaluator.new(namespace).instance_eval(&block)
+      if Representer.registered?(name)
+        namespace = Representer.fetch(name)
+      else
+        namespace = Namespace.new(name)
+        Representer.register(namespace)
       end
+
+      Evaluator::NamespaceEvaluator.new(namespace).instance_eval(&block)
     end
   end
 end

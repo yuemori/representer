@@ -8,10 +8,24 @@ require 'representer/element'
 require 'representer/namespace'
 
 module Representer
-  module_function
+  class << self
+    include Enumerable
 
-  def load(file)
-    string = File.read(file)
-    Parser.new.parse(string)
+    delegate :each, :fetch, :registered?, to: :namespaces
+
+    def load(file)
+      string = File.read(file)
+      Parser.new.parse(string)
+    end
+
+    def register(namespace)
+      namespaces.register namespace.name, namespace
+    end
+
+    private
+
+    def namespaces
+      @namespaces ||= Registry.new(:Namespace)
+    end
   end
 end

@@ -1,5 +1,7 @@
 module Representer
   class Namespace
+    attr_reader :name
+
     def initialize(name)
       @name = name
     end
