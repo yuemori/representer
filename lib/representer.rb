@@ -6,6 +6,7 @@ require 'representer/parser'
 require 'representer/evaluator'
 require 'representer/element'
 require 'representer/namespace'
+require 'representer/plugin'
 
 module Representer
   class << self
@@ -22,10 +23,22 @@ module Representer
       namespaces.register namespace.name, namespace
     end
 
+    def register_plugin(name, klass)
+      plugins.register name, klass
+    end
+
+    def generate
+      plugins.each { |plugin| plugin.new(namespaces).generate }
+    end
+
     private
 
     def namespaces
       @namespaces ||= Registry.new(:Namespace)
+    end
+
+    def plugins
+      @plugins ||= Registry.new(:Plugin)
     end
   end
 end
