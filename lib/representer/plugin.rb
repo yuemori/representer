@@ -1,26 +1,23 @@
 module Representer
   class Plugin
-    class_attribute :template_path, :output_path
-
-    attr_reader :namespaces
+    delegate :namespaces, :config, to: Representer
 
     class << self
       delegate :register_plugin, to: Representer
+
+      attr_accessor :template_path, :output_path
     end
 
-    def initialize(namespaces)
-      @namespaces = namespaces
+    def template
+      @template ||= File.read(self.class.template_path)
+    end
+
+    def result
+      @result ||= ERB.new(template, nil, '-').result(binding)
     end
 
     def generate
-      template_path = self.class.template_path
-      output_path = self.class.output_path
-
-      raise RuntimeError.new, "#{template_path} is empty" unless template_path
-      raise RuntimeError.new, "#{output_path} is empty" unless output_path
-
-      result = ERB.new(template_path).result(binding)
-      File.write(output_path, result)
+      File.write(self.class.output_path, result)
     end
   end
 end

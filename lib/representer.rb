@@ -14,6 +14,14 @@ module Representer
 
     delegate :each, :fetch, :registered?, to: :namespaces
 
+    def config
+      @config ||= {}
+    end
+
+    def configure
+      yield config if block_given?
+    end
+
     def load(file)
       string = File.read(file)
       Parser.new.parse(string)
@@ -28,10 +36,8 @@ module Representer
     end
 
     def generate
-      plugins.each { |plugin| plugin.new(namespaces).generate }
+      plugins.each { |plugin| plugin.new.generate }
     end
-
-    private
 
     def namespaces
       @namespaces ||= Registry.new(:Namespace)

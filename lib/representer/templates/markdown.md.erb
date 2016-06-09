@@ -1,0 +1,35 @@
+# <%= config[:title] || 'API Description' %>
+
+<%- namespaces.each do |namespace| -%>
+## <%= namespace.name %>
+
+  <%- if namespace.definitions.present? -%>
+### Definitions
+    <%- namespace.definitions.each do |definition| -%>
+
+#### <%= definition.name %>
+
+|name|type|type option|
+      <%- definition.fields.each do |field| -%>
+|<%= field.name %>|<%= field.type %>|<%= field.type.options %>|
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
+
+  <%- if namespace.links.present? -%>
+### Links
+    <%- namespace.links.each do |link| -%>
+
+#### <%= link.name %>
+
+##### Response Parameter
+
+      <%- if link.response.params.present? -%>
+|name|param_type|param option|
+        <%- link.response.params.each do |param| -%>
+|<%= param.name %>|<%= param.param_type %>|<%= param.options %>|
+        <%- end -%>
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>

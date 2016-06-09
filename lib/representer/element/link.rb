@@ -1,7 +1,7 @@
 module Representer
   module Element
     class Link
-      attr_reader :path, :method
+      attr_reader :name, :path, :method
 
       def initialize(name)
         @name = name

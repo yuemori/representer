@@ -12,8 +12,14 @@ module Representer
       end
 
       class Value
+        attr_reader :options
+
         def initialize(options)
           @options = options
+        end
+
+        def to_s
+          self.class.name.demodulize
         end
       end
 
