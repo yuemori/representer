@@ -10,11 +10,19 @@ module Representer
           end
         end
 
+        def options
+          self.class.options.each_with_object({}) { |k, h| h[k] = public_send(k)}.compact
+        end
+
         def to_s
           self.class.name.demodulize
         end
 
-        %i(example description).each do |method_name|
+        def self.options
+          @options ||= %i(example decrpiton)
+        end
+
+        options.each do |method_name|
           attr_writer method_name
 
           define_method method_name do

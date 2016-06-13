@@ -11,7 +11,7 @@
 
 |name|type|type option|
       <%- definition.fields.each do |field| -%>
-|<%= field.name %>|<%= field.type %>|<%= field.type.options %>|
+|<%= field.name %>|<%= field.type %>|<%= field.type.options.map { |k, v| "- #{k}: #{v}" }.join("\n") %>|
       <%- end -%>
     <%- end -%>
   <%- end -%>
